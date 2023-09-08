@@ -26,10 +26,10 @@
 	<div>
 		{{ form_errors(form) }}
 	</div>
-	<button type="submit" class="btn btn-primary">Вычислить</button>
+	<button type="submit" class="btn btn-primary" id="calculate">Вычислить</button>
 	{{ form_end (form) }}
 </div>
-<div>
+<div id="result">
 	{{ result }}
 </div>
 {% endblock %}

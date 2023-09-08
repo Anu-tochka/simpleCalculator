@@ -28,7 +28,7 @@ class Calculator
 		$this->arg2;
 		$this->sign;
     }
-    
+
 	public function addition($arg1, $arg2)
     {
         return $arg1 + $arg2;
