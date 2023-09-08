@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+		$(document).ready(function() {
+			$("#form").on("submit", function(e){
+				e.preventDefault();
+				let reqq = [];
+				let err = '';
+				let arg1 = $(this).find('#arg1').val();
+				let arg2 = $(this).find('#arg2').val();
+				let sign = $(this).find('#sign').val();
+				
+				// если не число
+				if ( arg1.match(/\D/) || arg2.match(/\D/) ){
+					err = 'Введите число';
+				}	
+				else{	
+					// если деление на ноль
+					if ( (sign == '/') && (arg2 == 0) ) { 
+						err = 'Делить на ноль нельзя';
+					}
+				});
+				
+				// если есть ошибки, то выводим их
+				if ( err ){
+					err = 'Введите число';
+				}	
+				// иначе отправляем данные на сервер
+				else{
+				
+				$.ajax({
+					url: "/office/save",
+					method: 'post',
+					data: { reqq },
+					success: function(data){
+						// если информация занесена в базу, то не показываем сегодня больше форму а переадресуем на страницу месяца
+						location.assign("/office/showMonth/"+m);
+					}
+				});
+			});
+		});
+		
+	</script>
+{% endblock %}
+
+{% block body %}
+
+<h1>Калькулятор</h1>
+<div>
+{{ form_start (form) }}
+	<div>
+		{{ form_label(form.arg1, 'Аргумент 1') }}
+		{{ form_widget(form.arg1, {
+			'attr': {'required': true}
+		}) }}
+	</div>
+	<div>
+		{{ form_label(form.sign, 'Операция') }}
+		{{ form_widget(form.sign, {
+			'attr': {'class': 'dropdown-menu position-static d-grid gap-1 p-2 rounded-3 mx-0 shadow w-220px'}
+        }) }}
+	</div>
+	<div>
+		{{ form_label(form.arg2, 'Аргумент 2') }}
+		{{ form_widget(form.arg2, {
+			'attr': {'required': true}
+		}) }}
+	</div>
+	<div>
+		{{ form_errors(form) }}
+	</div>
+	<button type="submit" class="btn btn-primary">Вычислить</button>
+	{{ form_end (form) }}
+</div>
+<div>
+</div>
+{% endblock %}
