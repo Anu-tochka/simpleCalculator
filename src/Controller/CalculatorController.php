@@ -18,8 +18,8 @@ class CalculatorController extends AbstractController
     {
         $calculator = new Calculator();
 		$form = $this->createForm(CalcType::class, $calculator);
-
         $form->handleRequest($request);
+		
         if ($form->isSubmitted() && $form->isValid()) {
 			$arg1 = (float)$form->get('arg1')->getData();
 			$arg2 = (float)$form->get('arg2')->getData();
