@@ -1,49 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block javascripts %}
-    <script type="text/javascript">
-		$(document).ready(function() {
-			$("#form").on("submit", function(e){
-				e.preventDefault();
-				let reqq = [];
-				let err = '';
-				let arg1 = $(this).find('#arg1').val();
-				let arg2 = $(this).find('#arg2').val();
-				let sign = $(this).find('#sign').val();
-				
-				// если не число
-				if ( arg1.match(/\D/) || arg2.match(/\D/) ){
-					err = 'Введите число';
-				}	
-				else{	
-					// если деление на ноль
-					if ( (sign == '/') && (arg2 == 0) ) { 
-						err = 'Делить на ноль нельзя';
-					}
-				});
-				
-				// если есть ошибки, то выводим их
-				if ( err ){
-					err = 'Введите число';
-				}	
-				// иначе отправляем данные на сервер
-				else{
-				
-				$.ajax({
-					url: "/office/save",
-					method: 'post',
-					data: { reqq },
-					success: function(data){
-						// если информация занесена в базу, то не показываем сегодня больше форму а переадресуем на страницу месяца
-						location.assign("/office/showMonth/"+m);
-					}
-				});
-			});
-		});
-		
-	</script>
-{% endblock %}
-
 {% block body %}
 
 <h1>Калькулятор</h1>
@@ -74,5 +30,6 @@
 	{{ form_end (form) }}
 </div>
 <div>
+	{{ result }}
 </div>
 {% endblock %}

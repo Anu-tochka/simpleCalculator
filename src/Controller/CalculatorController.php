@@ -21,20 +21,35 @@ class CalculatorController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $calculator = $form->getData();
+			$arg1 = (float)$form->get('arg1')->getData();
+			$arg2 = (float)$form->get('arg2')->getData();
+			$sign = $form->get('sign')->getData();
+			
+			if ($sign == '/' && $arg2 == 0) {
+				$resultStr = 'Делить на ноль нельзя!';
+			} 
+			else{
+				$result = match($sign){
+					'+' => $calculator -> addition($arg1, $arg2),
+					'-' => $calculator -> subtraction($arg1, $arg2),
+					'*' => $calculator -> multiplication($arg1, $arg2),
+					'/' => $calculator -> division($arg1, $arg2),				
+				};
+				$arg1 = (string)$arg1;
+				$arg2 = (string)$arg2;
+				
+				$resultStr = $arg1.' '.$sign.' '.$arg2." = ".$result;
+			}
+			
+			return $this->render('calculator/index.html.twig', [
+				'form' => $form->createView(),
+				'result' => $resultStr,
+			]);
         }
 
 		return $this->render('calculator/index.html.twig', [
 			'form' => $form->createView(),
-        ]);
-    }
-	
-	#[Route('/calculator', name: 'app_calculator')]
-    public function calculator(): JsonResponse
-    {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/CalculatorController.php',
+			'result' => '',
         ]);
     }
 }
