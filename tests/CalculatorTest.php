@@ -9,30 +9,35 @@ class CalculatorTest extends TestCase
 {
     public function testAddition(): void
     {
-        $calculator = new Calculator(2.2,3,"+");
-        $result = $calculator->addition(2.2,3);
+        $calcA = new Calculator(2.2,3,"+");
+        $resultA = $calcA->addition();
 
-        $this->assertEquals(5.2, $result);
+        $this->assertEquals(5.2, $resultA);
     }
     public function testSubtraction(): void
     {
-        $calculator = new Calculator(2,3,"-");
-        $result = $calculator->subtraction(2,3);
+        $calcS = new Calculator(2,3,"-");
+        $resultS = $calcS->subtraction();
 
-        $this->assertEquals(-1, $result);
+        $this->assertEquals(-1, $resultS);
     }
     public function testMultiplication(): void
     {
-        $calculator = new Calculator(2,3,"*");
-        $result = $calculator->multiplication(2,3);
+        $calcM = new Calculator(2,3,"*");
+        $resultM = $calcM->multiplication();
 
-        $this->assertEquals(6, $result);
+        $this->assertEquals(6, $resultM);
     }
     public function testDivision(): void
     {
-        $calculator = new Calculator(9,3,"/");
-        $result = $calculator->division(9,3);
-
-        $this->assertEquals(3, $result);
+        $calcD = new Calculator(9,3,"/");
+        $resultD = $calcD->division();
+        $this->assertEquals(3, $resultD);
+    }
+    public function testDivisionByZero(): void
+    {
+        $calcD = new Calculator(9,0,"/");
+        $this->expectExceptionMessage('Division by zero');
+        $calcD->division();
     }
 }
